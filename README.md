@@ -8,7 +8,7 @@
 * Nono Alec Marx Gabriel Belen  
 * Yasumuro Mariel Mendoza
 
-**Background of the Proposed Virtual Exhibit**
+### **Background of the Proposed Virtual Exhibit**
 
 In early multitasking systems, the OS carved physical RAM into chunks and handed them to processes as they started. When a process closed, its chunk was freed, but that freed region sat wherever it happened to be in memory, not necessarily adjacent to any other free region. Over time, as programs were started and stopped at different moments, free memory became scattered across small, non-contiguous holes. This is external fragmentation. This means a system can have enough total free memory to satisfy an allocation request, yet be completely unable to fulfill it because no single contiguous block is large enough. A program needing 2.5 GB cannot be split across a 1 GB hole and a 2 GB hole. It must land in one contiguous region.
 
@@ -28,7 +28,7 @@ The proposed core stack is as follows:
 * React JSX for building interactive visualizers and simulations  
 * CSS Modules for scoped and organized component styling
 
-**Interactive element — Memory fragmentation step-through**
+### **Interactive element — Memory fragmentation step-through**
 
 Each step displays four things: a horizontal RAM bar where each program occupies a proportional colored segment, a stats row tracking total free memory, the largest contiguous free block, and the number of holes, a caption explaining what the OS is doing and why it matters, and a program queue showing the status of each program (Waiting, Next up, Running, Closed, or Failed).
 
