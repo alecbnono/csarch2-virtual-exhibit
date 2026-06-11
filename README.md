@@ -1,5 +1,9 @@
 ### **CSARCH2 VIRTUAL EXHIBIT**
 
+### **Proposal Write Up Link:** https://docs.google.com/document/d/1ZMVh7Pd56G49Xbd0d0VN0TmAYVSYSMWPeGFJR1NeJHk/edit?tab=t.nmczb89685uj
+
+### **Style Guide Snapshot Link:** https://www.figma.com/design/9UvQtgoi524cgPsaxZOKkg/CSARCH2---Style-guide-snapshot?node-id=1-1043&t=Wy7L57AGLdzWEqIN-1
+
 **Submitted By:**
 
 * Fabregas Matthew Drew  
