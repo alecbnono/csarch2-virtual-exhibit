@@ -34,13 +34,18 @@ The proposed core stack is as follows:
 
 ### **Interactive element — Memory fragmentation step-through**
 
-Each step displays four things: a horizontal RAM bar where each program occupies a proportional colored segment, a stats row tracking total free memory, the largest contiguous free block, and the number of holes, a caption explaining what the OS is doing and why it matters, and a program queue showing the status of each program (Waiting, Next up, Running, Closed, or Failed).
+A two-phase interactive component is used.
 
-Steps 0 through 4 load five programs into a clean 8 GB RAM bar one by one: Chrome with YouTube at 2 GB, Discord at 1 GB, Valorant at 3 GB, Spotify at 1 GB, and a Video Editor at 4 GB. Step 5 closes Chrome, leaving a 2 GB hole at the front. Step 6 closes Valorant, leaving a 3 GB hole in the middle. Discord (1 GB) remains open between the two large holes, physically blocking them from being merged. Step 7 shows the Video Editor failing to load: total free memory is 6 GB, but the largest single hole is only 3 GB, which is less than the 4 GB needed.
+In the first phase, the user builds a queue. They are presented with a set of programs, each with a fixed memory size: Chrome with YouTube at 2 GB, Discord at 1 GB, Valorant at 3 GB, Spotify at 1 GB, and a Video Editor at 4 GB. The user drags or clicks to arrange an event sequence, choosing which programs load first and which get closed partway through. A sixth slot lets the user pick one program to attempt loading at the end, which will either succeed or fail depending on the state of memory at that point.
 
-Steps 8 and 9 introduce virtual memory as the solution. Instead of a single bar, two bars are shown stacked. The top bar shows the physical RAM layout, still fragmented with Discord between the holes. The bottom bar shows Video Editor's virtual view, where the OS has used a page table to map Hole A (2 GB) and Hole B (3 GB) into one contiguous 5 GB address space. The program loads successfully, with no knowledge of the physical layout beneath it.
+In the second phase, the component generates a step-by-step presentation based on the queue the user built. Each step shows a horizontal RAM bar where each program occupies a proportional colored segment, a stats row tracking total free memory, the largest contiguous free block, and the number of holes, and a caption describing what the OS is doing at that step. The user navigates with Back and Next buttons.
 
-The component is built entirely in React with CSS transitions on the flex-grow values of memory bar segments for smooth resizing between steps.
+Because the queue is user-defined, the fragmentation outcome varies. A user who closes programs in an order that leaves holes separated by a still-running program will hit the failure state. A user who closes programs cleanly from one end may not. This variability is intentional: it encourages visitors to experiment and discover the conditions that cause fragmentation rather than just observe a fixed example.
+
+If the final load attempt fails due to fragmentation, the last two steps switch to a dual-bar view showing physical RAM on top and the program's virtual address space below, demonstrating how the OS uses a page table to map two separate physical holes into one contiguous virtual block for the program.
+
+The component is built in React with queue state managed via useState hooks and the step sequence derived from the queue at the moment the user confirms it.
+
 
 **Mobile-responsive layout:**
 
