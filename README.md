@@ -32,20 +32,19 @@ The proposed core stack is as follows:
 * React JSX for building interactive visualizers and simulations  
 * CSS Modules for scoped and organized component styling
 
-### **Interactive element — Memory fragmentation step-through**
+### **Interactive element: RedDev OS Memory Simulator**
 
-A two-phase interactive component is used.
+The interactive element is a gamified, state-driven React component that simulates a desktop operating system. Rather than clicking through static slides or a basic list, the user acts as the computer operator, guided by an interactive mascot named "RedDev." 
 
-In the first phase, the user builds a queue. They are presented with a set of programs, each with a fixed memory size: Chrome with YouTube at 2 GB, Discord at 1 GB, Valorant at 3 GB, Spotify at 1 GB, and a Video Editor at 4 GB. The user drags or clicks to arrange an event sequence, choosing which programs load first and which get closed partway through. A sixth slot lets the user pick one program to attempt loading at the end, which will either succeed or fail depending on the state of memory at that point.
+Phase 1 will simulate the fragmentation trap that happens with physical memory. The user boots into the "RedDev OS" desktop. Guided by RedDev’s speech bubble, the user is instructed to manually open several programs from the desktop (Chrome, Discord, and Valorant). As apps open, the user can check the "Task Manager" window, which displays a proportional, color-coded physical RAM bar alongside real-time metrics (Total Free, Largest Block, and Holes).
 
-In the second phase, the component generates a step-by-step presentation based on the queue the user built. Each step shows a horizontal RAM bar where each program occupies a proportional colored segment, a stats row tracking total free memory, the largest contiguous free block, and the number of holes, and a caption describing what the OS is doing at that step. The user navigates with Back and Next buttons.
+To demonstrate external fragmentation, RedDev instructs the user to close Chrome and Valorant, stranding Discord in the center of the RAM bar. The user is then asked to open a massive 4 GB Video Editor. Because the system is restricted to physical memory allocation, the Video Editor triggers an "Out of Memory" crash, as there is no single contiguous 4 GB block available.
+Phase 2 will showcase the solution following the forced crash in Phase 1 by RedDev introducing Virtual Memory. The user toggles a system switch, revealing a dual-bar view in the Task Manager showing physical RAM on top and the program's virtual address space below. When the user attempts to open the Video Editor again, the component visually demonstrates the OS using a page table to map the application's contiguous virtual address space into the scattered physical holes, allowing the program to load successfully.
 
-Because the queue is user-defined, the fragmentation outcome varies. A user who closes programs in an order that leaves holes separated by a still-running program will hit the failure state. A user who closes programs cleanly from one end may not. This variability is intentional: it encourages visitors to experiment and discover the conditions that cause fragmentation rather than just observe a fixed example.
+Once the tutorial concludes, RedDev unlocks "Sandbox Mode" which is Phase 3. The user is given a full queue of programs with fixed memory sizes (Chrome at 2 GB, Discord at 1 GB, Valorant at 3 GB, Spotify at 1 GB, and a Video Editor at 4 GB).
+Instead of a pre-determined sequence or a static slideshow, the user has total freedom to click and open/close these programs directly on the desktop in any order they choose. Because the sequence is entirely user-defined, the fragmentation outcome varies dynamically. A user who closes programs cleanly from one end might never see an error, while a user who closes programs haphazardly will strand running apps and create isolated memory holes. This variability is intentional: it encourages visitors to experiment, intentionally cause fragmentation, and then toggle the Virtual Memory switch to watch the page table resolve their unique memory mess in real-time.
 
-If the final load attempt fails due to fragmentation, the last two steps switch to a dual-bar view showing physical RAM on top and the program's virtual address space below, demonstrating how the OS uses a page table to map two separate physical holes into one contiguous virtual block for the program.
-
-The component is built in React with queue state managed via useState hooks and the step sequence derived from the queue at the moment the user confirms it.
-
+The component is built entirely in React. State management is handled via useState hooks to track the active programs array, recalculate the largest contiguous block dynamically as apps are opened or closed, and trigger the CSS transitions. 
 
 **Mobile-responsive layout:**
 
